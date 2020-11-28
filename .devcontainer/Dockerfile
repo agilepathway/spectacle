@@ -16,8 +16,9 @@ ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Configure apt, install packages and tools
-# hadolint ignore=DL3003,DL4006
+# hadolint ignore=DL3003,DL4006,DL4001
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends apt-utils=1.8.2.1 dialog=1.3-20190211-1 2>&1 \
@@ -36,6 +37,8 @@ RUN apt-get update \
     && apt-get -y install --no-install-recommends zsh=5.7.1-1 \
     && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
     #
+    # Install gauge
+    && curl -SsL https://downloads.gauge.org/stable | sh \
     # Build Go tools w/module support
     && mkdir -p /tmp/gotools \
     && cd /tmp/gotools \
