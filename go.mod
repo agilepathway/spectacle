@@ -1,4 +1,4 @@
-module github.com/getgauge/spectacle
+module github.com/getgauge/jira
 
 go 1.13
 
