@@ -23,18 +23,18 @@ jobs:
       - name: Install gauge-js
         run: gauge install js
 
-      - name: Install spectacle
+      - name: Install jira
         run: |
           go run build/make.go && go run build/make.go --distro
-          gauge install spectacle --file $(ls -d bin/distros/*.zip)
+          gauge install jira --file $(ls -d bin/distros/*.zip)
 
       - name: Clone gauge-tests
-        run: git clone --branch spectacle https://github.com/agilepathway/gauge-tests
+        run: git clone --branch jira-wip https://github.com/agilepathway/gauge-tests
 
       - name: Run FTs
         run: |
           cd gauge-tests
-          ./gradlew clean spectacleJsFT
+          ./gradlew clean jiraJsFT
 
       - name: Upload logs
         uses: actions/upload-artifact@v1
