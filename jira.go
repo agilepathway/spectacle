@@ -10,6 +10,7 @@ import (
 
 	"github.com/getgauge/jira/constant"
 	"github.com/getgauge/jira/conv"
+	"github.com/getgauge/jira/export"
 	"github.com/getgauge/jira/gauge_messages"
 	"github.com/getgauge/jira/json"
 	"github.com/getgauge/jira/util"
@@ -46,6 +47,9 @@ func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails)
 	writeCSS()
 	for i, file := range files {
 		conv.ConvertFile(file, files, i)
+	}
+	for _, file := range files {
+		export.Spec(file)
 	}
 	createIndex()
 	fmt.Printf("Succesfully exported specs to Jira => %s\n", filepath.Join(outDir, indexFile))
