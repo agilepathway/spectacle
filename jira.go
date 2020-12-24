@@ -8,11 +8,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/getgauge/spectacle/constant"
-	"github.com/getgauge/spectacle/conv"
-	"github.com/getgauge/spectacle/gauge_messages"
-	"github.com/getgauge/spectacle/json"
-	"github.com/getgauge/spectacle/util"
+	"github.com/getgauge/jira/constant"
+	"github.com/getgauge/jira/conv"
+	"github.com/getgauge/jira/gauge_messages"
+	"github.com/getgauge/jira/json"
+	"github.com/getgauge/jira/util"
 	"google.golang.org/grpc"
 )
 

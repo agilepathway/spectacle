@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/getgauge/spectacle/gauge_messages"
-	"github.com/getgauge/spectacle/util"
+	"github.com/getgauge/jira/gauge_messages"
+	"github.com/getgauge/jira/util"
 	"github.com/golang-commonmark/markdown"
 )
 

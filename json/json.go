@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/getgauge/spectacle/constant"
-	"github.com/getgauge/spectacle/gauge_messages"
-	"github.com/getgauge/spectacle/util"
+	"github.com/getgauge/jira/constant"
+	"github.com/getgauge/jira/gauge_messages"
+	"github.com/getgauge/jira/util"
 )
 
 var projectRoot = util.GetProjectRoot()
