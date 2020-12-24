@@ -48,7 +48,7 @@ func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails)
 		conv.ConvertFile(file, files, i)
 	}
 	createIndex()
-	fmt.Printf("Succesfully converted specs to html => %s\n", filepath.Join(outDir, indexFile))
+	fmt.Printf("Succesfully exported specs to Jira => %s\n", filepath.Join(outDir, indexFile))
 	return &gauge_messages.Empty{}, nil
 }
 
