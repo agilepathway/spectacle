@@ -19,7 +19,9 @@
 		"go.useLanguageServer": true,
 		"go.gopath": "/go",
 		"go.goroot": "/usr/local/go",
-		"go.toolsGopath": "/go/bin"
+		"go.toolsGopath": "/go/bin",
+		"files.autoSave": "afterDelay",
+		"files.autoSaveDelay": 500
 	},
 	
 	// Add the IDs of extensions you want installed when the container is created.
