@@ -32,6 +32,10 @@ jobs:
         run: git clone --branch jira-wip https://github.com/agilepathway/spectacle-functional-tests
 
       - name: Run FTs
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
         run: |
           cd spectacle-functional-tests
           ./gradlew clean jiraJsFT
