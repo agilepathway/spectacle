@@ -10,7 +10,7 @@ import (
 	"github.com/getgauge/jira/util"
 )
 
-func Spec(specFile string) { //nolint:golint
+func Spec(specFile string, jiraIssue string) { //nolint:golint
 	fmt.Printf("Exporting spec: %s", specFile)
 
 	specBytes, err := ioutil.ReadFile(specFile) //nolint:gosec
@@ -29,7 +29,7 @@ func Spec(specFile string) { //nolint:golint
 		panic(err)
 	}
 
-	req, err := jiraClient.NewRawRequest("PUT", "rest/api/2/issue/JIRAGAUGE-1", bytes.NewBufferString(`{"update":{"description":[{"set": "`+jsonSpec+`"}]}}`)) //nolint:lll
+	req, err := jiraClient.NewRawRequest("PUT", fmt.Sprintf("rest/api/2/issue/%s", jiraIssue), bytes.NewBufferString(`{"update":{"description":[{"set": "`+jsonSpec+`"}]}}`)) //nolint:lll
 	if err != nil {
 		panic(err)
 	}

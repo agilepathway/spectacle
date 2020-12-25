@@ -9,6 +9,7 @@ import (
 
 	"github.com/getgauge/jira/export"
 	"github.com/getgauge/jira/gauge_messages"
+	"github.com/getgauge/jira/spec"
 	"github.com/getgauge/jira/util"
 	"google.golang.org/grpc"
 )
@@ -25,13 +26,26 @@ type handler struct {
 }
 
 func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails) (*gauge_messages.Empty, error) {
+	jiraIssues := make(map[string][]spec.Spec)
+
 	var files []string //nolint:prealloc
 	for _, arg := range strings.Split(os.Getenv(gaugeSpecsDir), fileSeparator) {
 		files = append(files, util.GetFiles(arg)...)
 	}
 
 	for _, file := range files {
-		export.Spec(file)
+		theSpec := spec.New(file)
+
+		for _, issue := range theSpec.JiraIssues() {
+			issues := jiraIssues[issue]
+			jiraIssues[issue] = append(issues, theSpec)
+		}
+	}
+
+	for jiraIssue, issueSpecs := range jiraIssues {
+		// nolint:godox
+		// TODO: export all the specs pertaining to the issue, not just the first one
+		export.Spec(issueSpecs[0].Filename, jiraIssue)
 	}
 
 	fmt.Println("Successfully exported specs to Jira")
