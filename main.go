@@ -25,30 +25,12 @@ type handler struct {
 }
 
 func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails) (*gauge_messages.Empty, error) {
-	jiraIssues := make(map[string]jira.Issue)
-
-	var files []string //nolint:prealloc
+	var specFilenames []string //nolint:prealloc
 	for _, arg := range strings.Split(os.Getenv(gaugeSpecsDir), fileSeparator) {
-		files = append(files, util.GetFiles(arg)...)
+		specFilenames = append(specFilenames, util.GetFiles(arg)...)
 	}
 
-	for _, file := range files {
-		theSpec := jira.NewSpec(file)
-
-		for _, issueKey := range theSpec.IssueKeys() {
-			issue := jiraIssues[issueKey]
-			// nolint:godox
-			// TODO: not elegant to always set the key here
-			issue.Key = issueKey
-			issue.AddSpec(theSpec)
-			jiraIssues[issueKey] = issue
-		}
-	}
-
-	for _, issue := range jiraIssues {
-		issue.Publish()
-	}
-
+	jira.PublishSpecs(specFilenames)
 	fmt.Println("Successfully exported specs to Jira")
 
 	return &gauge_messages.Empty{}, nil
