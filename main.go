@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/getgauge/jira/export"
 	"github.com/getgauge/jira/gauge_messages"
 	"github.com/getgauge/jira/jira"
 	"github.com/getgauge/jira/util"
@@ -26,7 +25,7 @@ type handler struct {
 }
 
 func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails) (*gauge_messages.Empty, error) {
-	jiraIssues := make(map[string][]jira.Spec)
+	jiraIssues := make(map[string]jira.Issue)
 
 	var files []string //nolint:prealloc
 	for _, arg := range strings.Split(os.Getenv(gaugeSpecsDir), fileSeparator) {
@@ -36,16 +35,18 @@ func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails)
 	for _, file := range files {
 		theSpec := jira.NewSpec(file)
 
-		for _, issue := range theSpec.JiraIssues() {
-			issues := jiraIssues[issue]
-			jiraIssues[issue] = append(issues, theSpec)
+		for _, issueKey := range theSpec.IssueKeys() {
+			issue := jiraIssues[issueKey]
+			// nolint:godox
+			// TODO: not elegant to always set the key here
+			issue.Key = issueKey
+			issue.AddSpec(theSpec)
+			jiraIssues[issueKey] = issue
 		}
 	}
 
-	for jiraIssue, issueSpecs := range jiraIssues {
-		// nolint:godox
-		// TODO: export all the specs pertaining to the issue, not just the first one
-		export.Spec(issueSpecs[0].Filename, jiraIssue)
+	for _, issue := range jiraIssues {
+		issue.Publish()
 	}
 
 	fmt.Println("Successfully exported specs to Jira")
