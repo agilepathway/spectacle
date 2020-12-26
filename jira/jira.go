@@ -1,10 +1,10 @@
-package spec //nolint:stylecheck
+package jira //nolint:stylecheck
 
 type Spec struct { //nolint:golint
 	Filename string
 }
 
-func New(filename string) Spec { //nolint:golint
+func NewSpec(filename string) Spec { //nolint:golint
 	return Spec{filename}
 }
 

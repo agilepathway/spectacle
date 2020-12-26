@@ -9,7 +9,7 @@ import (
 
 	"github.com/getgauge/jira/export"
 	"github.com/getgauge/jira/gauge_messages"
-	"github.com/getgauge/jira/spec"
+	"github.com/getgauge/jira/jira"
 	"github.com/getgauge/jira/util"
 	"google.golang.org/grpc"
 )
@@ -26,7 +26,7 @@ type handler struct {
 }
 
 func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails) (*gauge_messages.Empty, error) {
-	jiraIssues := make(map[string][]spec.Spec)
+	jiraIssues := make(map[string][]jira.Spec)
 
 	var files []string //nolint:prealloc
 	for _, arg := range strings.Split(os.Getenv(gaugeSpecsDir), fileSeparator) {
@@ -34,7 +34,7 @@ func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails)
 	}
 
 	for _, file := range files {
-		theSpec := spec.New(file)
+		theSpec := jira.NewSpec(file)
 
 		for _, issue := range theSpec.JiraIssues() {
 			issues := jiraIssues[issue]
