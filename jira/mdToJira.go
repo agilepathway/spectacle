@@ -1,5 +1,9 @@
 package jira //nolint:stylecheck
 
-func mdToJira(md string) string {
-	return md
+import (
+	"github.com/kalafut/m2j"
+)
+
+func mdToJira(str string) string {
+	return m2j.MDToJira(str)
 }
