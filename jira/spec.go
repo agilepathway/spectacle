@@ -9,10 +9,11 @@ import (
 
 type Spec struct { //nolint:golint
 	Filename string
+	markdown string
 }
 
 func NewSpec(filename string) Spec { //nolint:golint
-	return Spec{filename}
+	return Spec{filename, readMarkdown(filename)}
 }
 
 func (s *Spec) IssueKeys() []string { //nolint:golint
@@ -21,9 +22,13 @@ func (s *Spec) IssueKeys() []string { //nolint:golint
 	return []string{"JIRAGAUGE-1"}
 }
 
-func (s Spec) String() string {
-	specBytes, err := ioutil.ReadFile(s.Filename) //nolint:gosec
-	util.Fatal(fmt.Sprintf("Error while reading %s file", s.Filename), err)
+func (s *Spec) jiraFmt() string {
+	return mdToJira(s.markdown)
+}
+
+func readMarkdown(filename string) string {
+	specBytes, err := ioutil.ReadFile(filename) //nolint:gosec
+	util.Fatal(fmt.Sprintf("Error while reading %s file", filename), err)
 
 	return string(specBytes)
 }
