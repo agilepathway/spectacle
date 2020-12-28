@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/getgauge/jira/export"
 	"github.com/getgauge/jira/gauge_messages"
+	"github.com/getgauge/jira/internal/jira"
 	"github.com/getgauge/jira/util"
 	"google.golang.org/grpc"
 )
@@ -25,15 +25,12 @@ type handler struct {
 }
 
 func (h *handler) GenerateDocs(c context.Context, m *gauge_messages.SpecDetails) (*gauge_messages.Empty, error) {
-	var files []string //nolint:prealloc
+	var specFilenames []string //nolint:prealloc
 	for _, arg := range strings.Split(os.Getenv(gaugeSpecsDir), fileSeparator) {
-		files = append(files, util.GetFiles(arg)...)
+		specFilenames = append(specFilenames, util.GetFiles(arg)...)
 	}
 
-	for _, file := range files {
-		export.Spec(file)
-	}
-
+	jira.PublishSpecs(specFilenames)
 	fmt.Println("Successfully exported specs to Jira")
 
 	return &gauge_messages.Empty{}, nil
