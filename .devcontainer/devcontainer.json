@@ -24,6 +24,9 @@
 		"go.lintFlags": [
 			"--fast"
 		],
+		"go.testEnvVars": {
+			"GAUGE_PROJECT_ROOT": "/home/vscode/workspace/spectacle"
+		},
 		"files.autoSave": "afterDelay",
 		"files.autoSaveDelay": 500
 	},
