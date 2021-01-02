@@ -14,11 +14,12 @@ func (i *issue) addSpec(spec spec) {
 }
 
 func (i *issue) jiraFmtSpecs() string {
-	// nolint: godox
-	// TODO: do not just format the first spec
-	// TODO: this method is currently doing two things: jira formatting and json formatting
-	//   - so it should probably be split into separate methods
-	return i.removeOpeningAndClosingQuotes(fmt.Sprintf("%#v", i.specs[0].jiraFmt()))
+	var jiraFmtSpecs string
+	for _, spec := range i.specs {
+		jiraFmtSpecs += i.removeOpeningAndClosingQuotes(fmt.Sprintf("%#v", spec.jiraFmt()))
+	}
+
+	return jiraFmtSpecs
 }
 
 func (i *issue) removeOpeningAndClosingQuotes(spec string) string {
