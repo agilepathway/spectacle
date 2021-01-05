@@ -12,7 +12,7 @@ func (i *issue) addSpec(spec spec) {
 }
 
 func (i *issue) publishSpecs() string {
-	return json.Fmt(i.currentDescription() + i.jiraFmtSpecs())
+	return json.Fmt(i.currentDescription() + "----\n" + i.jiraFmtSpecs() + "----")
 }
 
 func (i *issue) jiraFmtSpecs() string {
